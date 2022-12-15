@@ -15,13 +15,13 @@
  */
 package org.springframework.samples.petclinic.db;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Repository class for <code>Pet</code> domain objects All method names are compliant with Spring Data naming
