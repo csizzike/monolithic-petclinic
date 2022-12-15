@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.vet.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.samples.petclinic.vet.dto.VetDTO;
 import org.springframework.samples.petclinic.vet.model.Vet;
 
 import java.util.Collection;
@@ -27,6 +28,29 @@ class VetServiceTest {
                 .hasFieldOrPropertyWithValue("nrOfSpecialties", 2)
                 .extracting(Vet::getSpecialties).asList()
                 .extracting("name")
+                .containsExactly("dentistry", "surgery");
+    }
+
+    @Test
+    void shouldFindVetDtos() {
+        Collection<VetDTO> vets = service.allVetDTOs();
+
+        assertThat(vets)
+                .hasSize(6)
+                .first()
+                .hasFieldOrPropertyWithValue("lastName", "Carter")
+                .hasFieldOrPropertyWithValue("firstName", "James")
+                .extracting(VetDTO::getSpecialities).asList()
+                .isEmpty();
+
+        assertThat(vets)
+                .filteredOn(vet -> vet.getFirstName()
+                        .equals("Linda"))
+                .hasSize(1)
+                .first()
+                .hasFieldOrPropertyWithValue("lastName", "Douglas")
+                .hasFieldOrPropertyWithValue("firstName", "Linda")
+                .extracting(VetDTO::getSpecialities).asList()
                 .containsExactly("dentistry", "surgery");
     }
 
