@@ -12,7 +12,7 @@ import org.springframework.samples.petclinic.vet.model.Vet;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VetService {
+public class VetService implements HasVets {
 
     private final VetRepository vets;
 
@@ -25,6 +25,7 @@ public class VetService {
         return this.vets.findAll();
     }
 
+    @Override
     public Collection<VetDTO> allVetDTOs() {
         return allVets().stream()
                 .map(this::convertToDTO)
