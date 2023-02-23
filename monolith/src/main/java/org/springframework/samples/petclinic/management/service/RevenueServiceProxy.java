@@ -1,11 +1,11 @@
 package org.springframework.samples.petclinic.management.service;
 
-import org.springframework.samples.petclinic.management.model.YearlyRevenue;
-
 import java.util.List;
+
+import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
 
 public interface RevenueServiceProxy {
 
-    List<YearlyRevenue> listYearlyRevenue();
+    List<YearlyRevenueDTO> listYearlyRevenue();
 
 }

@@ -27,15 +27,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.samples.petclinic.management.model.YearlyRevenue;
-import org.springframework.samples.petclinic.management.service.RevenueService;
+import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
 import org.springframework.samples.petclinic.management.service.VisitsStatisticsService;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = ManagementController.class)
 class ManagementControllerTests {
 
-    static final List<YearlyRevenue> EXPECTED_REVENUES = asList(new YearlyRevenue(2020,
+    static final List<YearlyRevenueDTO> EXPECTED_REVENUES = asList(new YearlyRevenueDTO(2020,
             333L));
 
     @Autowired

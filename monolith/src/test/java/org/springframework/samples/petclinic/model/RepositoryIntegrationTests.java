@@ -15,19 +15,19 @@
  */
 package org.springframework.samples.petclinic.model;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.management.db.RevenueRepository;
-import org.springframework.samples.petclinic.management.model.YearlyRevenue;
-import org.springframework.samples.petclinic.vet.db.VetRepository;
-import org.springframework.samples.petclinic.db.VisitRepository;
-import org.springframework.samples.petclinic.vet.model.Vet;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.samples.petclinic.db.VisitRepository;
+import org.springframework.samples.petclinic.management.db.RevenueRepository;
+import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
+import org.springframework.samples.petclinic.vet.db.VetRepository;
+import org.springframework.samples.petclinic.vet.model.Vet;
 
 @SpringBootTest
 class RepositoryIntegrationTests {
@@ -51,13 +51,15 @@ class RepositoryIntegrationTests {
     void testFindVisits() {
         List<Visit> visits = this.visitsRepository.findByPetId(7);
         assertThat(visits).hasSize(2);
-        assertThat(visits.get(0).getCost()).isEqualTo(100);
+        assertThat(visits.get(0)
+                .getCost()).isEqualTo(100);
     }
 
     @Test
     void testGenerateRevenueReport() {
-        List<YearlyRevenue> yearlyRevenues = this.revenueRepository.listYearlyRevenue();
+        List<YearlyRevenueDTO> yearlyRevenues = this.revenueRepository.listYearlyRevenue();
         assertThat(yearlyRevenues).hasSize(1);
-        assertThat(yearlyRevenues.get(0).getTotal()).isEqualTo(800L);
+        assertThat(yearlyRevenues.get(0)
+                .getTotal()).isEqualTo(800L);
     }
 }

@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.management.service;
 import java.util.List;
 
 import org.springframework.samples.petclinic.management.db.RevenueRepository;
-import org.springframework.samples.petclinic.management.model.YearlyRevenue;
+import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +16,7 @@ public class RevenueService implements RevenueServiceProxy {
     }
 
     @Override
-    public List<YearlyRevenue> listYearlyRevenue() {
+    public List<YearlyRevenueDTO> listYearlyRevenue() {
         return revenueRepository.listYearlyRevenue();
     }
 }

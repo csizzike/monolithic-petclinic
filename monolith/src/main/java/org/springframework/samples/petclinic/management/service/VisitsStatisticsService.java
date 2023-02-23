@@ -1,14 +1,14 @@
 package org.springframework.samples.petclinic.management.service;
 
-import org.springframework.context.annotation.Primary;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.samples.petclinic.management.db.VisitsStatisticsRepository;
 import org.springframework.samples.petclinic.management.model.YearlyRevenue;
+import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-@Primary
 public class VisitsStatisticsService implements RevenueServiceProxy {
 
     private final VisitsStatisticsRepository visitsStatisticsRepository;
@@ -18,7 +18,14 @@ public class VisitsStatisticsService implements RevenueServiceProxy {
     }
 
     @Override
-    public List<YearlyRevenue> listYearlyRevenue() {
-        return visitsStatisticsRepository.listYearlyRevenue();
+    public List<YearlyRevenueDTO> listYearlyRevenue() {
+        return convertToDto(visitsStatisticsRepository.listYearlyRevenue());
+    }
+
+    private List<YearlyRevenueDTO> convertToDto(final List<YearlyRevenue> entities) {
+        return entities.stream()
+                .map(v -> new YearlyRevenueDTO(v.getYear(),
+                        v.getTotal()))
+                .collect(Collectors.toList());
     }
 }
