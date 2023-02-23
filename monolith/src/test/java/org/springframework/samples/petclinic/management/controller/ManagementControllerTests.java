@@ -13,38 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.controller;
+package org.springframework.samples.petclinic.management.controller;
+
+import static java.util.Arrays.asList;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.samples.petclinic.model.YearlyRevenue;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.management.model.YearlyRevenue;
+import org.springframework.samples.petclinic.management.service.RevenueService;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest(controllers = ManagementController.class)
 class ManagementControllerTests {
 
-    static final List<YearlyRevenue> EXPECTED_REVENUES = asList(
-        new YearlyRevenue(2020, 333L)
-    );
+    static final List<YearlyRevenue> EXPECTED_REVENUES = asList(new YearlyRevenue(2020,
+            333L));
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    ClinicService service;
+    RevenueService service;
 
     @BeforeEach
     void setup() {
@@ -54,9 +51,10 @@ class ManagementControllerTests {
     @Test
     void testShowRevenueHtml() throws Exception {
         mockMvc.perform(get("/management/revenue")) //
-            .andExpect(status().isOk()) //
-            .andExpect(model().attribute("revenues", EXPECTED_REVENUES)) //
-            .andExpect(view().name("management/showRevenue"));
+                .andExpect(status().isOk()) //
+                .andExpect(model().attribute("revenues",
+                        EXPECTED_REVENUES)) //
+                .andExpect(view().name("management/showRevenue"));
     }
 
 }

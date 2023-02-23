@@ -15,23 +15,17 @@
  */
 package org.springframework.samples.petclinic.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.Collection;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.model.YearlyRevenue;
+import org.springframework.samples.petclinic.model.*;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Ken Krebs
@@ -61,8 +55,13 @@ class ClinicServiceTests {
         Owner owner = service.ownerById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
         assertThat(owner.getPets()).hasSize(1);
-        assertThat(owner.getPets().get(0).getType()).isNotNull();
-        assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+        assertThat(owner.getPets()
+                .get(0)
+                .getType()).isNotNull();
+        assertThat(owner.getPets()
+                .get(0)
+                .getType()
+                .getName()).isEqualTo("cat");
     }
 
     @Test
@@ -78,7 +77,8 @@ class ClinicServiceTests {
         owner.setCity("Wollongong");
         owner.setTelephone("4444444444");
         service.save(owner);
-        assertThat(owner.getId().longValue()).isNotEqualTo(0);
+        assertThat(owner.getId()
+                .longValue()).isNotEqualTo(0);
 
         owners = service.ownerByLastName("Schultz");
         assertThat(owners.size()).isEqualTo(found + 1);
@@ -103,16 +103,21 @@ class ClinicServiceTests {
     void shouldFindPetWithCorrectId() {
         Pet pet7 = service.petById(7);
         assertThat(pet7.getName()).startsWith("Samantha");
-        assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
+        assertThat(pet7.getOwner()
+                .getFirstName()).isEqualTo("Jean");
     }
 
     @Test
     void shouldFindAllPetTypes() {
         Collection<PetType> petTypes = service.petTypes();
 
-        PetType petType1 = getById(petTypes, PetType.class, 1);
+        PetType petType1 = getById(petTypes,
+                PetType.class,
+                1);
         assertThat(petType1.getName()).isEqualTo("cat");
-        PetType petType4 = getById(petTypes, PetType.class, 4);
+        PetType petType4 = getById(petTypes,
+                PetType.class,
+                4);
         assertThat(petType4.getName()).isEqualTo("snake");
     }
 
@@ -120,21 +125,26 @@ class ClinicServiceTests {
     @Transactional
     void shouldInsertPetIntoDatabaseAndGenerateId() {
         Owner owner6 = service.ownerById(6);
-        int found = owner6.getPets().size();
+        int found = owner6.getPets()
+                .size();
 
         Pet pet = new Pet();
         pet.setName("bowser");
         Collection<PetType> types = service.petTypes();
-        pet.setType(getById(types, PetType.class, 2));
+        pet.setType(getById(types,
+                PetType.class,
+                2));
         pet.setBirthDate(LocalDate.now());
         owner6.addPet(pet);
-        assertThat(owner6.getPets().size()).isEqualTo(found + 1);
+        assertThat(owner6.getPets()
+                .size()).isEqualTo(found + 1);
 
         service.save(pet);
         service.save(owner6);
 
         owner6 = service.ownerById(6);
-        assertThat(owner6.getPets().size()).isEqualTo(found + 1);
+        assertThat(owner6.getPets()
+                .size()).isEqualTo(found + 1);
         // checks that id has been generated
         assertThat(pet.getId()).isNotNull();
     }
@@ -153,12 +163,12 @@ class ClinicServiceTests {
         assertThat(pet7.getName()).isEqualTo(newName);
     }
 
-
     @Test
     @Transactional
     void shouldAddNewVisitForPet() {
         Pet pet7 = service.petById(7);
-        int found = pet7.getVisits().size();
+        int found = pet7.getVisits()
+                .size();
         Visit visit = new Visit();
         pet7.addVisit(visit);
         visit.setDescription("test");
@@ -167,7 +177,8 @@ class ClinicServiceTests {
         service.save(pet7);
 
         pet7 = service.petById(7);
-        assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
+        assertThat(pet7.getVisits()
+                .size()).isEqualTo(found + 1);
         assertThat(visit.getId()).isNotNull();
     }
 
@@ -182,30 +193,29 @@ class ClinicServiceTests {
         assertThat(visitArr[0].getCost()).isEqualTo(100);
     }
 
-    @Test
-    void shouldListYearlyRevenue() {
-        List<YearlyRevenue> yearlyRevenues = service.listYearlyRevenue();
-
-        assertThat(yearlyRevenues).hasSize(1);
-        assertThat(yearlyRevenues.get(0).getTotal()).isEqualTo(800L);
-    }
-
     /**
      * Look up the entity of the given class with the given id in the given collection.
      *
-     * @param entities    the collection to search
-     * @param entityClass the entity class to look up
-     * @param entityId    the entity id to look up
+     * @param entities
+     *            the collection to search
+     * @param entityClass
+     *            the entity class to look up
+     * @param entityId
+     *            the entity id to look up
      * @return the found entity
-     * @throws ObjectRetrievalFailureException if the entity was not found
+     * @throws ObjectRetrievalFailureException
+     *             if the entity was not found
      */
-    private <T extends BaseEntity> T getById(Collection<T> entities, Class<T> entityClass, int entityId)
-        throws ObjectRetrievalFailureException {
+    private <T extends BaseEntity> T getById(Collection<T> entities,
+                                             Class<T> entityClass,
+                                             int entityId)
+            throws ObjectRetrievalFailureException {
         for (T entity : entities) {
             if (entity.getId() == entityId && entityClass.isInstance(entity)) {
                 return entity;
             }
         }
-        throw new ObjectRetrievalFailureException(entityClass, entityId);
+        throw new ObjectRetrievalFailureException(entityClass,
+                entityId);
     }
 }

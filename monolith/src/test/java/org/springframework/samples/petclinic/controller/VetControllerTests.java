@@ -15,15 +15,23 @@
  */
 package org.springframework.samples.petclinic.controller;
 
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
+
+import java.util.Collections;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.vet.dto.VetDTO;
+import org.springframework.samples.petclinic.vet.service.HasVets;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,21 +40,27 @@ class VetControllerTests {
     @Autowired
     MockMvc mockMvc;
 
+    @MockBean
+    HasVets service;
+
+    @BeforeEach
+    void setup() {
+        PetType cat = new PetType();
+        cat.setId(3);
+        cat.setName("hamster");
+        given(this.service.allVetDTOs()).willReturn(Collections.singletonList(new VetDTO("James",
+                "Carter",
+                Collections.emptyList())));
+    }
+
     @Test
     void testShowVetListHtml() throws Exception {
         mockMvc.perform(get("/vets"))
-            .andExpect(status().isOk())
-            .andExpect(xpath("//table[@id='vets']").exists())
-            .andExpect(xpath("//table[@id='vets']/tbody/tr").nodeCount(6))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=1]/td[position()=1]").string("James Carter"))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=1]/td[position()=2]/span").string("none"))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=2]/td[position()=1]").string("Helen Leary"))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=2]/td[position()=2]/span").string("radiology "))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=3]/td[position()=1]").string("Linda Douglas"))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=3]/td[position()=2]/span").nodeCount(2))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=3]/td[position()=2]/span[position()=1]").string("dentistry "))
-            .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=3]/td[position()=2]/span[position()=2]").string("surgery "))
-        ;
+                .andExpect(status().isOk())
+                .andExpect(xpath("//table[@id='vets']").exists())
+                .andExpect(xpath("//table[@id='vets']/tbody/tr").nodeCount(1))
+                .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=1]/td[position()=1]").string("James Carter"))
+                .andExpect(xpath("//table[@id='vets']/tbody/tr[position()=1]/td[position()=2]/span").string("none"));
     }
 
 }

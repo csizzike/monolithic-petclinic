@@ -1,7 +1,7 @@
-package org.springframework.samples.petclinic.controller;
+package org.springframework.samples.petclinic.management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.management.service.RevenueService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -11,11 +11,11 @@ import java.util.Map;
 public class ManagementController {
 
     @Autowired
-    private ClinicService clinicService;
+    private RevenueService revenueService;
 
     @GetMapping("/management/revenue")
     public String showRevenue(Map<String, Object> model) {
-        model.put("revenues", clinicService.listYearlyRevenue());
+        model.put("revenues", revenueService.listYearlyRevenue());
         return "management/showRevenue";
     }
 
