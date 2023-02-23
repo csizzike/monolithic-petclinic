@@ -7,7 +7,7 @@ import org.springframework.samples.petclinic.management.model.YearlyRevenue;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RevenueService {
+public class RevenueService implements RevenueServiceProxy {
 
     private final RevenueRepository revenueRepository;
 
@@ -15,6 +15,7 @@ public class RevenueService {
         this.revenueRepository = revenueRepository;
     }
 
+    @Override
     public List<YearlyRevenue> listYearlyRevenue() {
         return revenueRepository.listYearlyRevenue();
     }
