@@ -6,10 +6,10 @@ import org.springframework.jms.annotation.EnableJms;
 
 @EnableJms
 @SpringBootApplication(proxyBeanMethods = false)
-public class Application {
+public class ApplicationMonolith {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ApplicationMonolith.class, args);
     }
 
 }

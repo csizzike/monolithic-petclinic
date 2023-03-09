@@ -11,7 +11,7 @@ cd activemq
 ../mvnw spring-boot:run
 ```
 Or you can run it from your IDE.
-You can then access hawtio UI here: http://localhost:8081/hawtio
+You can then access hawtio UI here: http://localhost:8089/hawtio
 
 ## Usage
 

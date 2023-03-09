@@ -1,8 +1,12 @@
 package org.springframework.samples.petclinic.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.samples.petclinic.db.OwnerRepository;
 import org.springframework.samples.petclinic.db.PetRepository;
 import org.springframework.samples.petclinic.db.VisitRepository;
@@ -21,14 +25,19 @@ public class ClinicService {
     private final PetRepository pets;
     private final VisitsStatisticsRepository visitsStatisticsRepository;
     private final VisitRepository visits;
+    private final JmsTemplate jmsTemplate;
 
-    public ClinicService(OwnerRepository owners,
-                         PetRepository pets,
-                         VisitsStatisticsRepository visitsStatisticsRepository, VisitRepository visits) {
+    public ClinicService(
+            OwnerRepository owners,
+            PetRepository pets,
+            VisitsStatisticsRepository visitsStatisticsRepository,
+            VisitRepository visits,
+                         final JmsTemplate jmsTemplate) {
         this.owners = owners;
         this.pets = pets;
         this.visitsStatisticsRepository = visitsStatisticsRepository;
         this.visits = visits;
+        this.jmsTemplate = jmsTemplate;
     }
 
     public Collection<Owner> ownerByLastName(String lastName) {
@@ -64,6 +73,12 @@ public class ClinicService {
         visitStatistics.setCost(visit.getCost());
         visitStatistics.setDate(visit.getDate());
         visitsStatisticsRepository.save(visitStatistics);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("cost", visit.getCost());
+        data.put("date", visit.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        jmsTemplate.convertAndSend("visit_statistics", data);
+
         visits.save(visit);
     }
 
