@@ -15,10 +15,15 @@
  */
 package org.springframework.samples.petclinic.controller;
 
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.service.ClinicService;
+import java.util.Collection;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.samples.petclinic.clinic.model.Owner;
+import org.springframework.samples.petclinic.clinic.model.Pet;
+import org.springframework.samples.petclinic.clinic.model.PetType;
+import org.springframework.samples.petclinic.clinic.service.ClinicService;
 import org.springframework.samples.petclinic.service.PetFormValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,10 +31,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Collection;
-import java.util.Optional;
 
 /**
  * @author Juergen Hoeller
@@ -68,46 +69,61 @@ class PetController {
     }
 
     @GetMapping("/pets/new")
-    public String initCreationForm(Owner owner, ModelMap model) {
+    public String initCreationForm(Owner owner,
+                                   ModelMap model) {
         Pet pet = new Pet();
         owner.addPet(pet);
         PetForm petForm = toForm(pet);
-        model.put("petForm", petForm);
+        model.put("petForm",
+                petForm);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/pets/new")
-    public String processCreationForm(Owner owner, @Valid PetForm petForm, BindingResult result, ModelMap model) {
-        if (StringUtils.hasLength(petForm.getName()) && petForm.isNew() && owner.getPet(petForm.getName(), true) != null) {
-            result.rejectValue("name", "duplicate", "already exists");
+    public String processCreationForm(Owner owner,
+                                      @Valid PetForm petForm,
+                                      BindingResult result,
+                                      ModelMap model) {
+        if (StringUtils.hasLength(petForm.getName()) && petForm.isNew() && owner.getPet(petForm.getName(),
+                true) != null) {
+            result.rejectValue("name",
+                    "duplicate",
+                    "already exists");
         }
         Pet pet = toEntity(petForm);
         owner.addPet(pet);
         if (result.hasErrors()) {
             petForm.setOwner(owner);
-            model.put("petForm", petForm);
+            model.put("petForm",
+                    petForm);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         }
-        
+
         this.service.save(pet);
         return "redirect:/owners/{ownerId}";
     }
 
     @GetMapping("/pets/{petId}/edit")
-    public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
+    public String initUpdateForm(@PathVariable("petId") int petId,
+                                 ModelMap model) {
         Pet pet = this.service.petById(petId);
-        model.put("petForm", toForm(pet));
+        model.put("petForm",
+                toForm(pet));
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdateForm(@Valid PetForm petForm, BindingResult result, Owner owner, ModelMap model) {
+    public String processUpdateForm(@Valid PetForm petForm,
+                                    BindingResult result,
+                                    Owner owner,
+                                    ModelMap model) {
         if (result.hasErrors()) {
             petForm.setOwner(owner);
-            model.put("petForm", petForm);
+            model.put("petForm",
+                    petForm);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         }
-        
+
         Pet pet = toEntity(petForm);
         owner.addPet(pet);
         this.service.save(pet);
@@ -119,9 +135,10 @@ class PetController {
         pet.setId(petForm.getId());
         pet.setName(petForm.getName());
         Optional<PetType> typeByName = this.service.petTypes()
-            .stream()
-            .filter(t -> t.getName().equals(petForm.getType()))
-            .findFirst();
+                .stream()
+                .filter(t -> t.getName()
+                        .equals(petForm.getType()))
+                .findFirst();
         typeByName.ifPresent(pet::setType);
         pet.setBirthDate(petForm.getBirthDate());
         return pet;
@@ -131,7 +148,9 @@ class PetController {
         PetForm petForm = new PetForm();
         petForm.setId(pet.getId());
         petForm.setName(pet.getName());
-        petForm.setType(pet.getType() != null ? pet.getType().getName() : null);
+        petForm.setType(pet.getType() != null ? pet.getType()
+                .getName()
+                                              : null);
         petForm.setBirthDate(pet.getBirthDate());
         petForm.setOwner(pet.getOwner());
         return petForm;

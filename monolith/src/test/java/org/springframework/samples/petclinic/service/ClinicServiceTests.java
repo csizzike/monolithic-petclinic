@@ -25,7 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.petclinic.model.*;
+import org.springframework.samples.petclinic.clinic.model.*;
+import org.springframework.samples.petclinic.clinic.service.ClinicService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,8 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 class ClinicServiceTests {
 
-    @Autowired
-    ClinicService service;
+    @Autowired ClinicService service;
 
     @Test
     void shouldFindOwnersByLastName() {

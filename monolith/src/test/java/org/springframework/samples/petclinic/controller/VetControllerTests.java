@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.samples.petclinic.model.PetType;
+import org.springframework.samples.petclinic.clinic.model.PetType;
 import org.springframework.samples.petclinic.vet.dto.VetDTO;
 import org.springframework.samples.petclinic.vet.service.HasVets;
 import org.springframework.test.web.servlet.MockMvc;

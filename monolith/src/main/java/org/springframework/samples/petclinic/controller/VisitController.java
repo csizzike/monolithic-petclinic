@@ -15,9 +15,9 @@
  */
 package org.springframework.samples.petclinic.controller;
 
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.service.ClinicService;
+import org.springframework.samples.petclinic.clinic.model.Pet;
+import org.springframework.samples.petclinic.clinic.model.Visit;
+import org.springframework.samples.petclinic.clinic.service.ClinicService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

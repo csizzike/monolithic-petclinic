@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.clinic.service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.samples.petclinic.db.OwnerRepository;
-import org.springframework.samples.petclinic.db.PetRepository;
-import org.springframework.samples.petclinic.db.VisitRepository;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.clinic.db.OwnerRepository;
+import org.springframework.samples.petclinic.clinic.db.PetRepository;
+import org.springframework.samples.petclinic.clinic.db.VisitRepository;
+import org.springframework.samples.petclinic.clinic.model.Owner;
+import org.springframework.samples.petclinic.clinic.model.Pet;
+import org.springframework.samples.petclinic.clinic.model.PetType;
+import org.springframework.samples.petclinic.clinic.model.Visit;
 import org.springframework.stereotype.Service;
 
 @Service

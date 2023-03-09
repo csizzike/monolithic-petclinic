@@ -15,10 +15,10 @@
  */
 package org.springframework.samples.petclinic.controller;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.Owner;
-
 import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.clinic.model.Owner;
 
 public class PetForm {
 

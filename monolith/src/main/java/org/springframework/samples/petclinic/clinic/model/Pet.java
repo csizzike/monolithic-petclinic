@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.model;
+package org.springframework.samples.petclinic.clinic.model;
+
+import java.time.LocalDate;
+import java.util.*;
+
+import javax.persistence.*;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
-
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.*;
 
 /**
  * Simple business object representing a pet.

@@ -22,18 +22,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.samples.petclinic.db.VisitRepository;
-import org.springframework.samples.petclinic.management.db.RevenueRepository;
-import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
+import org.springframework.samples.petclinic.clinic.db.VisitRepository;
+import org.springframework.samples.petclinic.clinic.model.Visit;
 
 @SpringBootTest
 class RepositoryIntegrationTests {
 
     @Autowired
     VisitRepository visitsRepository;
-
-    @Autowired
-    RevenueRepository revenueRepository;
 
     @Test
     void testFindVisits() {
@@ -43,11 +39,4 @@ class RepositoryIntegrationTests {
                 .getCost()).isEqualTo(100);
     }
 
-    @Test
-    void testGenerateRevenueReport() {
-        List<YearlyRevenueDTO> yearlyRevenues = this.revenueRepository.listYearlyRevenue();
-        assertThat(yearlyRevenues).hasSize(1);
-        assertThat(yearlyRevenues.get(0)
-                .getTotal()).isEqualTo(800L);
-    }
 }
