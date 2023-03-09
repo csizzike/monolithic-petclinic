@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
-import org.springframework.samples.petclinic.management.service.VisitsStatisticsService;
+import org.springframework.samples.petclinic.management.service.RevenueServiceProxy;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = ManagementController.class)
@@ -41,7 +41,7 @@ class ManagementControllerTests {
     MockMvc mockMvc;
 
     @MockBean
-    VisitsStatisticsService service;
+    RevenueServiceProxy service;
 
     @BeforeEach
     void setup() {

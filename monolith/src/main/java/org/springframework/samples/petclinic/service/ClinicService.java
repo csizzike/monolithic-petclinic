@@ -10,8 +10,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.samples.petclinic.db.OwnerRepository;
 import org.springframework.samples.petclinic.db.PetRepository;
 import org.springframework.samples.petclinic.db.VisitRepository;
-import org.springframework.samples.petclinic.management.db.VisitsStatisticsRepository;
-import org.springframework.samples.petclinic.management.model.VisitStatistics;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
@@ -23,19 +21,15 @@ public class ClinicService {
 
     private final OwnerRepository owners;
     private final PetRepository pets;
-    private final VisitsStatisticsRepository visitsStatisticsRepository;
     private final VisitRepository visits;
     private final JmsTemplate jmsTemplate;
 
-    public ClinicService(
-            OwnerRepository owners,
-            PetRepository pets,
-            VisitsStatisticsRepository visitsStatisticsRepository,
-            VisitRepository visits,
+    public ClinicService(final OwnerRepository owners,
+                         final PetRepository pets,
+                         final VisitRepository visits,
                          final JmsTemplate jmsTemplate) {
         this.owners = owners;
         this.pets = pets;
-        this.visitsStatisticsRepository = visitsStatisticsRepository;
         this.visits = visits;
         this.jmsTemplate = jmsTemplate;
     }
@@ -69,15 +63,14 @@ public class ClinicService {
     }
 
     public void save(Visit visit) {
-        VisitStatistics visitStatistics = new VisitStatistics();
-        visitStatistics.setCost(visit.getCost());
-        visitStatistics.setDate(visit.getDate());
-        visitsStatisticsRepository.save(visitStatistics);
-
         Map<String, Object> data = new HashMap<>();
-        data.put("cost", visit.getCost());
-        data.put("date", visit.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-        jmsTemplate.convertAndSend("visit_statistics", data);
+        data.put("cost",
+                visit.getCost());
+        data.put("date",
+                visit.getDate()
+                        .format(DateTimeFormatter.ISO_LOCAL_DATE));
+        jmsTemplate.convertAndSend("visit_statistics",
+                data);
 
         visits.save(visit);
     }

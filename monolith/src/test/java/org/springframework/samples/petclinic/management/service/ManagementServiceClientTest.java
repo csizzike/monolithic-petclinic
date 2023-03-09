@@ -18,7 +18,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 @SpringBootTest
 class ManagementServiceClientTest {
 
-    private final WireMockServer wireMock = new WireMockServer(options().port(8080));
+    private final WireMockServer wireMock = new WireMockServer(options().port(8082));
 
     @Autowired
     private ManagementServiceClient client;

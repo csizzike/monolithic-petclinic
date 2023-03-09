@@ -17,7 +17,6 @@ package org.springframework.samples.petclinic.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -26,26 +25,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.petclinic.db.VisitRepository;
 import org.springframework.samples.petclinic.management.db.RevenueRepository;
 import org.springframework.samples.petclinic.management.model.YearlyRevenueDTO;
-import org.springframework.samples.petclinic.vet.db.VetRepository;
-import org.springframework.samples.petclinic.vet.model.Vet;
 
 @SpringBootTest
 class RepositoryIntegrationTests {
-
-    @Autowired
-    VetRepository vetsRepository;
 
     @Autowired
     VisitRepository visitsRepository;
 
     @Autowired
     RevenueRepository revenueRepository;
-
-    @Test
-    void testFindVets() {
-        Collection<Vet> all = vetsRepository.findAll();
-        assertThat(all).hasSize(6);
-    }
 
     @Test
     void testFindVisits() {
