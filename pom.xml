@@ -19,6 +19,7 @@
         <module>activemq</module>
         <module>monolith</module>
         <module>vet</module>
+        <module>management</module>
     </modules>
 
     <properties>
