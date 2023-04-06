@@ -20,6 +20,8 @@
         <module>monolith</module>
         <module>vet</module>
         <module>management</module>
+        <module>query</module>
+        <module>command</module>
     </modules>
 
     <properties>
